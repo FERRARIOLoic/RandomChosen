@@ -1,8 +1,8 @@
+listStudents = ['Anthony', 'Stéphane', 'Loïc', 'Quentin', 'Dimitri', 'Thibaud', 'Maxime', 'Déborah', 'Mehdi'];
+    
 
+let saveData = () => {
 
-function getRandomStudent() {
-
-    listStudents = ['Anthony', 'Stéphane', 'Loïc', 'Quentin', 'Dimitri', 'Thibaud', 'Maxime', 'Déborah', 'Mehdi'];
     var chosen = Math.floor(Math.random() * listStudents.length);
     listStudents.forEach(function (element) {
         if (element == listStudents[chosen]) {
@@ -11,8 +11,7 @@ function getRandomStudent() {
     });
     
 console.log(listStudents[chosen]);
-console.log(listStudents[Math.floor(Math.random() * listStudents.length)]);
 
 }
-btnChoose = document.getElementById('btnChoose');
-btnChoose.addEventListener('click', getRandomStudent());
+
+btnChoose.addEventListener('click', saveData);
