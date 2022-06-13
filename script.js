@@ -1,24 +1,18 @@
 
-listStudents = array (
-    'Anthony',
-    'Stéphane',
-    'Loïc',
-    'Quentin',
-    'Dimitri',
-    'Thibaud',
-    'Maxime',
-    'Déborah',
-    'Mehdi'
-);
 
-chosen = random_int(0,8);
+function getRandomStudent() {
 
-array.forEach(element => {
-    if
+    listStudents = ['Anthony', 'Stéphane', 'Loïc', 'Quentin', 'Dimitri', 'Thibaud', 'Maxime', 'Déborah', 'Mehdi'];
+    var chosen = Math.floor(Math.random() * listStudents.length);
+    listStudents.forEach(function (element) {
+        if (element == listStudents[chosen]) {
+            returnChosen.innerHTML = `La personne sacrifiée est : ${element}`;
+        }
+    });
     
-});
-foreach ($listStudents as $key => $value) {
-    if($key==$chosen && $launch!=NULL){
-        echo $value;
-    }
+console.log(listStudents[chosen]);
+console.log(listStudents[Math.floor(Math.random() * listStudents.length)]);
+
 }
+btnChoose = document.getElementById('btnChoose');
+btnChoose.addEventListener('click', getRandomStudent());
