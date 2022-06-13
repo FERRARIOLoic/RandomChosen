@@ -6,7 +6,8 @@ let saveData = () => {
     var chosen = Math.floor(Math.random() * listStudents.length);
     listStudents.forEach(function (element) {
         if (element == listStudents[chosen]) {
-            returnChosen.innerHTML = `La personne sacrifiée est : ${element}`;
+            textChosen.innerHTML = `La personne sacrifiée est...`;
+            nameChosen.innerHTML = element;
         }
     });
     
