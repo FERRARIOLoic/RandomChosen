@@ -1,4 +1,4 @@
-listStudents = ['Anthony', 'Stéphane', 'Loïc', 'Quentin', 'Dimitri', 'Thibaud', 'Maxime', 'Deborah', 'Mehdi'];
+listStudents = ['Anthony', 'Stephane', 'Loic', 'Quentin', 'Dimitri', 'Thibaud', 'Maxime', 'Deborah', 'Mehdi'];
     
 
 let saveData = () => {
