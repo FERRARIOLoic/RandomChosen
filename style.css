@@ -19,10 +19,22 @@ body {
     width: 100%;
 }
 
-h1 {
-    font-size: 60px;
-    color: #740000;
-    text-shadow: 2px 2px 4px;
+@media screen and (max-width:576px) {
+
+    h1 {
+        font-size: 60px;
+        color: #740000;
+        text-shadow: 2px 2px 4px;
+    }
+}
+
+@media screen and (min-width:576px) {
+
+    h1 {
+        font-size: 100px;
+        color: #740000;
+        text-shadow: 2px 2px 4px;
+    }
 }
 
 a {
