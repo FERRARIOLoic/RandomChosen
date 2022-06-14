@@ -26,6 +26,12 @@ body {
         color: #740000;
         text-shadow: 2px 2px 4px;
     }
+
+    #nameChosen {
+        font-size: 80px;
+        animation: animNameChosen 1s ease 4s 1 normal both;
+        text-shadow: 2px 2px 4px #000000;
+    }
 }
 
 @media screen and (min-width:576px) {
@@ -34,6 +40,12 @@ body {
         font-size: 100px;
         color: #740000;
         text-shadow: 2px 2px 4px;
+    }
+
+    #nameChosen {
+        font-size: 100px;
+        animation: animNameChosen 1s ease 4s 1 normal both;
+        text-shadow: 2px 2px 4px #000000;
     }
 }
 
@@ -98,11 +110,6 @@ input {
     }
 }
 
-#nameChosen {
-    font-size: 100px;
-    animation: animNameChosen 1s ease 4s 1 normal both;
-    text-shadow: 2px 2px 4px #000000;
-}
 
 @keyframes animNameChosen {
     0% {
