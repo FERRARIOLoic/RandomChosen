@@ -27,7 +27,7 @@ body {
         text-shadow: 2px 2px 4px;
     }
 
-    #nameChosen {
+    .nameChosen {
         font-size: 80px;
         animation: animNameChosen 1s ease 4s 1 normal both;
         text-shadow: 2px 2px 4px #000000;
@@ -42,7 +42,7 @@ body {
         text-shadow: 2px 2px 4px;
     }
 
-    #nameChosen {
+    .nameChosen {
         font-size: 100px;
         animation: animNameChosen 1s ease 4s 1 normal both;
         text-shadow: 2px 2px 4px #000000;
@@ -95,7 +95,7 @@ input {
     border: 1px solid lightgray
 }
 
-#textChosen {
+.textChosen {
     animation: animTextchosen 1s ease 2s 1 normal both;
     text-shadow: 2px 2px 4px #000000;
 }
@@ -127,3 +127,7 @@ input {
 .copyright {
     font-size: x-small;
 }
+
+
+/* SPINNING WHEEL
+/* -------------------------------------------------- */
