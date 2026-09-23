@@ -1,0 +1,318 @@
+<?php
+
+require_once(__DIR__ . '/../utils/connect.php');
+
+class User
+{
+
+    private int $user_id;
+    private string $lastname;
+    private string $firstname;
+    private string $email;
+    private string $username;
+    private string $password;
+    private $pdo;
+
+    public function __construct()
+    {
+        $this->pdo = Database::DBconnect();
+    }
+
+
+    //------------- SETTERS ---------//
+    public function setID(int $user_id): void
+    {
+        $this->user_id = $user_id;
+    }
+    public function setLastname(string $lastname): void
+    {
+        $this->lastname = $lastname;
+    }
+    public function setFirstname(string $firstname): void
+    {
+        $this->firstname = $firstname;
+    }
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
+    }
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    //------------- GETTERS ---------//
+    public function getID(): int
+    {
+        return $this->user_id;
+    }
+    public function getLastname(): string
+    {
+        return $this->lastname;
+    }
+    public function getFirstname(): string
+    {
+        return $this->firstname;
+    }
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+
+    //------------- SAVE USER ---------//
+
+
+    public function save()
+    {
+        $user_new = User::isEmailExists($this->getEmail());
+        if ($user_new != 1) {
+            try {
+                $sql = 'INSERT INTO `users` (`users_email`, `users_password`) VALUES (:users_email, :users_password)';
+                $sth = $this->pdo->prepare($sql);
+                $sth->bindValue(':users_email', $this->getEmail(), PDO::PARAM_STR);
+                $sth->bindValue(':users_password', $this->getPassword(), PDO::PARAM_STR);
+                return $sth->execute();
+            } catch (PDOException $e) {
+                // var_dump($e);die;
+                return false;
+            }
+        }
+    }
+
+    //check if email exists for user creation
+    public static function isEmailExists(string $email): bool
+    {
+        try {
+            $sql = 'SELECT `users_email` FROM `users` WHERE `users_email` = :email';
+
+            $sth = Database::DBconnect()->prepare($sql);
+            $sth->bindValue(':email', $email, PDO::PARAM_STR);
+            $sth->execute();
+
+            return empty($sth->fetch()) ? false : true;
+        } catch (\PDOException $ex) {
+            var_dump($ex);
+            return false;
+        }
+    }
+
+
+
+    //------------- CHECK EMAIL EXIST ---------//
+    public static function checkEmail(string $email): int
+    {
+        try {
+            $pdo = Database::DBconnect();
+            $sql = "SELECT `users_email` FROM `users` WHERE `users_email`=:email";
+            $sth = $pdo->prepare($sql);
+            $sth->bindValue(':email', $email, PDO::PARAM_STR);
+            if ($sth->execute()) {
+                $checkedEmail = $sth->fetch();
+                return $checkedEmail ? 1 : 0;
+            } else {
+                return 2;
+            }
+        } catch (PDOException $e) {
+            return 2;
+        }
+    }
+
+    //validate user from email
+    public static function validated(string $email): bool
+    {
+        try {
+            $pdo = Database::DBconnect();
+            $sql = "UPDATE `users` SET `users_validated_at`=CURRENT_TIMESTAMP WHERE `users_email`=:email";
+            $sth = $pdo->prepare($sql);
+            $sth->bindValue(':email', $email, PDO::PARAM_STR);
+            $result = $sth->execute();
+
+            if (!$result) {
+                throw new PDOException();
+            } else {
+                return true;
+            }
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    //------------- UPDATE USER DATA ---------//
+    public function update()
+    {
+        try {
+            // var_dump($this->category);die;
+            $sql = "UPDATE `users` 
+            SET 
+            `users_lastnames`=:lastname, 
+            `users_firstname`=:firstname, 
+            `users_email`=:email
+            WHERE `user_id`=:user_id";
+            $sth = $this->pdo->prepare($sql);
+            $sth->bindValue(':category', $this->category, PDO::PARAM_INT);
+            $sth->bindValue(':gender', $this->gender, PDO::PARAM_INT);
+            $sth->bindValue(':lastname', $this->lastname, PDO::PARAM_STR);
+            $sth->bindValue(':firstname', $this->firstname, PDO::PARAM_STR);
+            $sth->bindValue(':email', $this->email, PDO::PARAM_STR);
+            $sth->bindValue(':phone', $this->phone, PDO::PARAM_STR);
+            $sth->bindValue(':birthdate', $this->birthdate, PDO::PARAM_STR);
+            $sth->bindValue(':user_id', $this->user_id, PDO::PARAM_INT);
+            $result = $sth->execute();
+
+            if (!$result) {
+                throw new PDOException();
+            } else {
+                return true;
+            }
+        } catch (PDOException $e) {
+            // var_dump($e);die;
+            return false;
+        }
+    }
+
+
+    //------------- GET ALL USERS ---------//
+    public static function getAll(int $user_id = 0)
+    {
+        try {
+            $pdo = Database::DBconnect();
+            $sql = "SELECT 
+            `users`.`user_id`,
+            `users`.`is_admin`,
+            `users`.`users_lastnames`,
+            `users`.`users_firstnames`,
+            `users`.`users_emails`,
+            `users`.`users_registrations_numbers`,
+            `users`.`users_passwords`,
+            `users`.`users_validated_at`
+            FROM `users`
+            ";
+            if ($user_id != 0) {
+                $sql .= " WHERE `users`.`user_id`=:user_id";
+            }
+            $sql .= " ORDER BY `users`.`users_lastnames`";
+            $sth = $pdo->prepare($sql);
+            if ($user_id != 0) {
+                $sth->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+            }
+            if ($sth->execute()) {
+                if ($user_id != 0) {
+                    $users_info = $sth->fetch();
+                } else {
+                    $users_info = $sth->fetchAll();
+                }
+                return $users_info;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            var_dump($e);
+            die;
+            return false;
+        }
+    }
+
+    //------------- GET BY EMAIL ---------//
+    public static function getByRegistrationNumber(string $registration_number): object|bool
+    {
+        try {
+            $pdo = Database::DBconnect();
+            $sql = 'SELECT * FROM `users` WHERE `users_registrations_numbers` = :registration_number;';
+            $sth = $pdo->prepare($sql);
+            $sth->bindValue(':registration_number', $registration_number, PDO::PARAM_STR);
+
+            if (!$sth->execute()) {
+                return false;
+            } else {
+                $user = $sth->fetch();
+                if (empty($user)) {
+                    return false;
+                }
+            }
+            return $user;
+        } catch (PDOException $ex) {
+            return false;
+        }
+    }
+
+
+    //------------- GET BY ID ---------//
+    public static function getInfoID(string $email)
+    {
+        try {
+            $pdo = Database::DBconnect();
+            $sql = "SELECT * FROM `users` WHERE `users_email`=:email";
+            $sth = $pdo->prepare($sql);
+            $sth->bindValue(':email', $email, PDO::PARAM_STR);
+            if ($sth->execute()) {
+                $users_info = $sth->fetch();
+                return $users_info;
+            } else {
+                return false;
+            }
+        } catch (PDOException $ex) {
+            return false;
+        }
+    }
+
+
+    //------------- GET FAVORITE ---------//
+    public static function getAllRequestsList()
+    {
+        try {
+            $pdo = Database::DBconnect();
+            $sql = "SELECT *
+            FROM `requests` 
+            INNER JOIN `requests_types` on `requests_types`.`request_type_id` = `requests`.`request_type_id`
+            ORDER BY `requests_priorities` DESC";
+            $sth = $pdo->prepare($sql);
+            if ($sth->execute()) {
+                $users_info = $sth->fetchAll();
+                return $users_info;
+            } else {
+                return false;
+            }
+        } catch (PDOException $ex) {
+            var_dump($ex);
+            die;
+            return false;
+        }
+    }
+
+
+    //------------- DELETE PATIENT ---------//
+    public static function delete(int $user_id)
+    {
+        try {
+            $pdo = Database::DBconnect();
+            $sql = "DELETE FROM `users` WHERE `id`=:user_id ";
+            $sth = $pdo->prepare($sql);
+            $sth->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+            $result = $sth->execute();
+            if (!$result) {
+                throw new PDOException();
+                $resultView = 'Erreur lors de la suppression du patient';
+                return $resultView;
+            } else {
+                $resultView = "Le patient a été supprimé";
+                return $resultView;
+            }
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+}

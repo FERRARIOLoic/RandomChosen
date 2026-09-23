@@ -1,0 +1,57 @@
+#--------------------------------------------------
+# Répertoire : //
+#--------------------------------------------------
+
+# Le serveur doit suivre les liens symboliques :
+Options +FollowSymlinks
+
+# Activation du module de réécriture d'URL :
+RewriteEngine on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+
+# Passage en https :
+# RewriteCond %{HTTP:X-Forwarded-Proto} !https
+
+#--------------------------------------------------
+# Règles de réécriture d'URL :
+#--------------------------------------------------
+
+#------------- INDEX ---------#
+RewriteRule ^accueil.html$ controllers/home_controller.php [L] 
+#------------- SIGN UP ---------#
+RewriteRule ^inscription.html$ controllers/signup_controller.php [L] 
+#------------- SIGN IN ---------#
+RewriteRule ^connexion.html$ controllers/signin_controller.php [L] 
+#------------- SIGN OUT ---------#
+RewriteRule ^deconnexion.html$ controllers/signout_controller.php [L] 
+#------------- PROFILE ---------#
+RewriteRule ^profil.html$ controllers/profile_controller.php [L] 
+#------------- SEARCH ---------#
+RewriteRule ^recherche.html$ controllers/search_controller.php [L]
+
+
+#------------- REQUESTS LIST ---------#
+RewriteRule ^choix_simple.html$ controllers/choices_simples_controller.php [L] 
+#------------- REQUEST INFO ---------#
+RewriteRule ^choix_double.html$ controllers/choices_doubles_controller.php [L] 
+
+#------------- MATERIAL NEW ---------#
+RewriteRule ^materiel_nouveau.html$ controllers/material_new_controller.php [L] 
+#------------- MATERIAL LIST ---------#
+RewriteRule ^materiel_liste.html$ controllers/material_list_controller.php [L] 
+#------------- MATERIAL INFO ---------#
+RewriteRule ^materiel_info.html$ controllers/material_info_controller.php [L] 
+
+#!------------- ADMIN ---------#
+
+#------------- HOME ---------#
+RewriteRule ^administrateur.html$ controllers/admin_home_controller.php [L] 
+#------------- BRANDS ---------#
+RewriteRule ^marques_administrateur.html$ controllers/admin_brands_controller.php [L]  
+#------------- MODELS ---------#
+RewriteRule ^modèles_administrateur.html$ controllers/admin_models_controller.php [L] 
+#------------- MODELS ---------#
+RewriteRule ^catégories_administrateur.html$ controllers/admin_categories_controller.php [L] 
+
+
+ErrorDocument 404 /controllers/error_controller.php
